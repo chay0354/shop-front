@@ -39,8 +39,9 @@ export default function App() {
     <StoreContext.Provider value={store}>
       <CartProvider>
         <BrowserRouter>
-          <CartBar />
-          <Routes>
+          <div className="app-layout">
+            <CartBar />
+            <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/category/:categoryId" element={<CategoryPage />} />
             <Route path="/subcategory/:subcategoryId" element={<SubcategoryPage />} />
@@ -49,7 +50,8 @@ export default function App() {
             <Route path="/order-confirmation/:orderId" element={<OrderConfirmationPage />} />
             <Route path="/admin" element={<AdminPage />} />
             <Route path="/admin/products/new" element={<AdminAddProductPage />} />
-          </Routes>
+            </Routes>
+          </div>
         </BrowserRouter>
       </CartProvider>
     </StoreContext.Provider>

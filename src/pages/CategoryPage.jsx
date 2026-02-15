@@ -44,7 +44,11 @@ export default function CategoryPage() {
           <>
             <h2 className="category-section-title">תת־קטגוריות</h2>
             <div className="subcategories-grid">
-              {subcategories.map((sub, index) => (
+              {subcategories.map((sub, index) => {
+                const products = sub.products || [];
+                const previewNames = products.slice(0, 3).map((p) => p.name_he).filter(Boolean);
+                const previewText = previewNames.length > 0 ? previewNames.join(' • ') : null;
+                return (
                 <Link
                   key={sub.id}
                   to={`/subcategory/${sub.id}`}
@@ -52,13 +56,22 @@ export default function CategoryPage() {
                   style={{ '--delay': `${index * 0.04}s` }}
                 >
                   <span className="subcategory-card-accent" />
-                  <span className="subcategory-card-name">{sub.name_he}</span>
-                  {sub.products?.length > 0 && (
-                    <span className="subcategory-card-badge">{sub.products.length} מוצרים</span>
+                  <div className="subcategory-card-top">
+                    <span className="subcategory-card-name">{sub.name_he}</span>
+                    {products.length > 0 && (
+                      <span className="subcategory-card-badge">{products.length} מוצרים</span>
+                    )}
+                  </div>
+                  {previewText && (
+                    <p className="subcategory-card-preview" title={previewText}>{previewText}</p>
+                  )}
+                  {products.length === 0 && (
+                    <p className="subcategory-card-empty">עדיין אין מוצרים בתת־קטגוריה זו</p>
                   )}
                   <span className="subcategory-card-cta">לחצו לגלוש ←</span>
                 </Link>
-              ))}
+                );
+              })}
             </div>
           </>
         )}

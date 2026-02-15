@@ -18,6 +18,8 @@
 html {
   font-size: 18px;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 body {
@@ -28,6 +30,7 @@ body {
   min-height: 100vh;
   direction: rtl;
   overflow-x: hidden;
+  width: 100%;
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -39,6 +42,8 @@ body {
 
 #root {
   min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 a {

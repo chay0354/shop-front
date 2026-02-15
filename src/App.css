@@ -1,3 +1,9 @@
+.app-layout {
+  width: 100%;
+  min-width: 0;
+  overflow-x: hidden;
+}
+
 .loading,
 .error {
   min-height: 100vh;
