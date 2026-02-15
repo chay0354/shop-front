@@ -1,0 +1,96 @@
+.cart-bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 1.25rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+@media (max-width: 480px) {
+  .cart-bar {
+    padding: 0.6rem 1rem;
+  }
+
+  .cart-bar-logo {
+    font-size: 1.05rem;
+  }
+
+  .cart-bar-cart {
+    padding: 0.5rem 0.65rem;
+    min-height: 44px;
+    min-width: 44px;
+    justify-content: center;
+  }
+
+  .cart-bar-nav {
+    gap: 0.5rem;
+  }
+}
+
+.cart-bar-logo {
+  font-family: 'Secular One', var(--font);
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.cart-bar-logo:hover {
+  color: var(--accent);
+}
+
+.cart-bar-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.cart-bar-admin {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  padding: 0.35rem 0.5rem;
+  border-radius: 8px;
+  transition: color 0.2s, background 0.2s;
+}
+
+.cart-bar-admin:hover {
+  color: var(--accent);
+  background: var(--surface-hover);
+}
+
+.cart-bar-cart {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text);
+  text-decoration: none;
+  border-radius: 10px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.cart-bar-cart:hover {
+  background: var(--surface-hover);
+  color: var(--accent);
+}
+
+.cart-bar-icon {
+  font-size: 1.2rem;
+}
+
+.cart-bar-count {
+  min-width: 1.25rem;
+  padding: 0.1rem 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--bg);
+  background: var(--accent);
+  border-radius: 8px;
+}
