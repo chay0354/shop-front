@@ -14,7 +14,7 @@ import AdminAddProductPage from './pages/AdminAddProductPage';
 import './index.css';
 import './App.css';
 
-const API = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api` : '/api';
+const API = import.meta.env.VITE_API_URL ? `${String(import.meta.env.VITE_API_URL).replace(/\/$/, '')}/api` : '/api';
 
 export default function App() {
   const [store, setStore] = useState([]);

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './AdminPage.css';
 
-const API = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api` : '/api';
+const API = import.meta.env.VITE_API_URL ? `${String(import.meta.env.VITE_API_URL).replace(/\/$/, '')}/api` : '/api';
 const PAYMENT_LABELS = { cash: 'מזומן במשלוח', card: 'כרטיס אשראי' };
 const ORDER_STATUS_LABELS = { supplied: 'הזמנה סופקה', not_supplied: '' };
 

@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './AdminAddProductPage.css';
 
-const API = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api` : '/api';
+const API = import.meta.env.VITE_API_URL ? `${String(import.meta.env.VITE_API_URL).replace(/\/$/, '')}/api` : '/api';
 
 export default function AdminAddProductPage() {
   const [categories, setCategories] = useState([]);

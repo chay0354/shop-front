@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../CartContext';
 import './CheckoutPage.css';
 
-const API = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api` : '/api';
+const API = import.meta.env.VITE_API_URL ? `${String(import.meta.env.VITE_API_URL).replace(/\/$/, '')}/api` : '/api';
 const PAYMENT_OPTIONS = [
   { id: 'cash', label: 'מזומן במשלוח' },
   { id: 'card', label: 'כרטיס אשראי' },
