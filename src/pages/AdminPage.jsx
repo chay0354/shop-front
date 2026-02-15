@@ -160,7 +160,10 @@ export default function AdminPage() {
         <Link to="/" className="admin-back">← חזרה לחנות</Link>
         <h1 className="admin-title">ניהול הזמנות</h1>
         <p className="admin-subtitle">לחצו על שורה לפתיחת פרטים. סטטוס הזמנה ניתן לשינוי רק מהאדמין.</p>
-        <Link to="/admin/products/new" className="admin-add-product-btn">+ הוסף מוצר</Link>
+        <div className="admin-header-actions">
+          <Link to="/admin/products/new" className="admin-add-product-btn">+ הוסף מוצר</Link>
+          <Link to="/admin/products" className="admin-edit-products-btn">✎ ערוך מוצרים</Link>
+        </div>
       </header>
 
       {orders.length === 0 ? (

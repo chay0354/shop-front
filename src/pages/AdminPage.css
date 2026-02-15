@@ -46,22 +46,49 @@
   margin: 0;
 }
 
-.admin-add-product-btn {
-  display: inline-block;
-  margin-top: 1rem;
+.admin-add-product-btn,
+.admin-edit-products-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
   padding: 0.65rem 1.25rem;
   font-family: var(--font);
   font-size: 1rem;
   font-weight: 600;
-  color: var(--bg);
-  background: var(--accent);
   border-radius: 10px;
   text-decoration: none;
-  transition: background 0.2s;
+  transition: background 0.2s, color 0.2s;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.admin-add-product-btn {
+  color: var(--bg);
+  background: var(--accent);
 }
 
 .admin-add-product-btn:hover {
   background: #d4ad2a;
+}
+
+.admin-header-actions {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.admin-edit-products-btn {
+  color: var(--accent);
+  background: transparent;
+  border: 2px solid var(--accent);
+}
+
+.admin-edit-products-btn:hover {
+  background: var(--accent-soft);
+  color: var(--text);
 }
 
 .admin-section {

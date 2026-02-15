@@ -11,6 +11,7 @@ import CheckoutPage from './pages/CheckoutPage';
 import OrderConfirmationPage from './pages/OrderConfirmationPage';
 import AdminPage from './pages/AdminPage';
 import AdminAddProductPage from './pages/AdminAddProductPage';
+import AdminProductsPage from './pages/AdminProductsPage';
 import './index.css';
 import './App.css';
 
@@ -50,6 +51,7 @@ export default function App() {
             <Route path="/order-confirmation/:orderId" element={<OrderConfirmationPage />} />
             <Route path="/admin" element={<AdminPage />} />
             <Route path="/admin/products/new" element={<AdminAddProductPage />} />
+            <Route path="/admin/products" element={<AdminProductsPage />} />
             </Routes>
           </div>
         </BrowserRouter>

@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './AdminAddProductPage.css';
 
 const API = import.meta.env.VITE_API_URL ? `${String(import.meta.env.VITE_API_URL).replace(/\/$/, '')}/api` : '/api';
@@ -12,13 +12,13 @@ export default function AdminAddProductPage() {
   const [name_he, setNameHe] = useState('');
   const [description_he, setDescriptionHe] = useState('');
   const [price, setPrice] = useState('');
-  const [sort_order, setSortOrder] = useState('0');
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState(null);
 
   const fileInputRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch(`${API}/categories`)
@@ -49,7 +49,6 @@ export default function AdminAddProductPage() {
     setNameHe('');
     setDescriptionHe('');
     setPrice('');
-    setSortOrder('0');
     setImageFile(null);
     setImagePreview(null);
     setMessage(null);
@@ -89,7 +88,6 @@ export default function AdminAddProductPage() {
       formData.append('name_he', name_he.trim());
       if (description_he.trim()) formData.append('description_he', description_he.trim());
       formData.append('price', numPrice);
-      formData.append('sort_order', Number(sort_order) || 0);
       if (imageFile) formData.append('image', imageFile);
 
       const res = await fetch(`${API}/admin/products`, {
@@ -101,8 +99,9 @@ export default function AdminAddProductPage() {
         setMessage({ type: 'error', text: data.error || 'שגיאה בשמירת מוצר' });
         return;
       }
-      setMessage({ type: 'success', text: 'המוצר נוסף בהצלחה. רענן את הדף כדי לראות בחנות.' });
+      setMessage({ type: 'success', text: 'המוצר נוסף בהצלחה!' });
       resetForm();
+      setTimeout(() => navigate('/admin'), 1500);
     } catch (err) {
       setMessage({ type: 'error', text: err.message || 'שגיאה ברשת' });
     } finally {
@@ -179,16 +178,6 @@ export default function AdminAddProductPage() {
             min="0"
             step="0.01"
             required
-          />
-        </div>
-        <div className="admin-form-row">
-          <label className="admin-form-label">סדר (אופציונלי)</label>
-          <input
-            type="number"
-            className="admin-form-input"
-            value={sort_order}
-            onChange={(e) => setSortOrder(e.target.value)}
-            min="0"
           />
         </div>
         <div className="admin-form-row">
