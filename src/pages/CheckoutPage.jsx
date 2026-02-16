@@ -239,12 +239,11 @@ export default function CheckoutPage() {
               <p className="checkout-hint">בחרו שעה עגולה מהשעה הבאה עד 20:00. אחרי 20:00 או לפני 08:00 — זמין מחר 08:00–20:00. בחירת שעה מבטלת משלוח אקספרס.</p>
               <select
                 name="delivery_time_slot"
-                value={availableSlots.some((s) => s.value === form.delivery_time_slot) ? form.delivery_time_slot : ''}
+                value={form.delivery_time_slot && availableSlots.some((s) => s.value === form.delivery_time_slot) ? form.delivery_time_slot : ''}
                 onChange={handleChange}
-                required={availableSlots.length > 0}
                 className="checkout-input checkout-select"
               >
-                <option value="">בחרו שעת משלוח</option>
+                <option value="">מיידי</option>
                 {availableSlots.map((slot) => (
                   <option key={slot.value} value={slot.value}>{slot.label}</option>
                 ))}
