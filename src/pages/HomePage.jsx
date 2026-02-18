@@ -63,12 +63,6 @@ export default function HomePage() {
         </a>
       </header>
 
-      {/* Section label */}
-      <div className="home-section-head">
-        <h2 className="home-section-title">בחרו קטגוריה</h2>
-        <p className="home-section-desc">לחצו על כרטיס כדי לראות תת־קטגוריות ומוצרים</p>
-      </div>
-
       {/* Category grid */}
       <main className="home-categories-wrap">
         <div className="categories-grid">
