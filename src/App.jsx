@@ -24,6 +24,7 @@ import OrderConfirmationPage from './pages/OrderConfirmationPage';
 import AdminGuard from './components/AdminGuard';
 import TermsGate from './components/TermsGate';
 import MainLayout from './components/MainLayout';
+import AccessibilityMenu from './components/AccessibilityMenu';
 import AdminPage from './pages/AdminPage';
 import AdminAddProductPage from './pages/AdminAddProductPage';
 import AdminProductsPage from './pages/AdminProductsPage';
@@ -60,6 +61,7 @@ export default function App() {
             <TermsGate>
               <CartBar />
               <FloatingWhatsApp />
+              <AccessibilityMenu />
               <Routes>
               <Route path="/admin" element={<AdminGuard />}>
                 <Route index element={<AdminPage />} />

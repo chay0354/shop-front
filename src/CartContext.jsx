@@ -69,7 +69,11 @@ export function CartProvider({ children }) {
       dispatch({ type: 'setQuantity', payload: { product_id: productId, quantity } });
     const clearCart = () => dispatch({ type: 'clear' });
 
-    const total = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
+    const subtotal = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
+    const FREE_SHIPPING_MIN = 279;
+    const DELIVERY_FEE = 30;
+    const deliveryFee = subtotal > 0 && subtotal < FREE_SHIPPING_MIN ? DELIVERY_FEE : 0;
+    const total = subtotal + deliveryFee;
     const count = items.reduce((sum, i) => sum + i.quantity, 0);
 
     return {
@@ -78,6 +82,8 @@ export function CartProvider({ children }) {
       removeItem,
       setQuantity,
       clearCart,
+      subtotal,
+      deliveryFee,
       total,
       count,
     };

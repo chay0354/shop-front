@@ -65,6 +65,7 @@ export default function AdminProductsPage() {
       image_url: product.image_url,
       imageFile: null,
       imagePreview: product.image_url || null,
+      hidden: !!product.hidden,
     });
     setMessage(null);
   };
@@ -116,6 +117,7 @@ export default function AdminProductsPage() {
       formData.append('description_he', (editing.description_he || '').trim() || '');
       formData.append('price', numPrice);
       formData.append('subcategory_id', editing.subcategory_id);
+      formData.append('hidden', editing.hidden ? 'true' : 'false');
       if (editing.imageFile) formData.append('image', editing.imageFile);
 
       const res = await fetch(`${API}/admin/products/${editing.id}`, {
@@ -212,7 +214,10 @@ export default function AdminProductsPage() {
                   )}
                 </div>
                 <div className="admin-products-item-info">
-                  <span className="admin-products-item-name">{p.name_he}</span>
+                  <div className="admin-products-item-name-row">
+                    <span className="admin-products-item-name">{p.name_he}</span>
+                    {p.hidden && <span className="admin-products-item-badge-hidden" title="מוצר מוסתר">מוסתר</span>}
+                  </div>
                   <span className="admin-products-item-meta">
                     {p.category_name} → {p.subcategory_name} · ₪{Number(p.price).toFixed(2)}
                   </span>
@@ -311,6 +316,17 @@ export default function AdminProductsPage() {
                   step="0.01"
                   required
                 />
+              </div>
+              <div className="admin-form-row admin-form-row-checkbox">
+                <label className="admin-form-label admin-form-checkbox-label">
+                  <input
+                    type="checkbox"
+                    checked={!!editing.hidden}
+                    onChange={(e) => setEditField('hidden', e.target.checked)}
+                    className="admin-form-checkbox"
+                  />
+                  <span>הסתר מוצר (לא יוצג באתר)</span>
+                </label>
               </div>
               <div className="admin-form-row">
                 <label className="admin-form-label">תמונה (השאר ריק כדי לא לשנות)</label>

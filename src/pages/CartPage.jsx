@@ -3,7 +3,7 @@ import { useCart } from '../CartContext';
 import './CartPage.css';
 
 export default function CartPage() {
-  const { items, setQuantity, removeItem, total, count } = useCart();
+  const { items, setQuantity, removeItem, total, deliveryFee, count } = useCart();
 
   if (count === 0) {
     return (
@@ -67,6 +67,12 @@ export default function CartPage() {
         </ul>
 
         <div className="cart-summary">
+          {deliveryFee > 0 && (
+            <div className="cart-total-row cart-delivery-row">
+              <span>דמי משלוח (מתחת ל־₪279)</span>
+              <span>₪{deliveryFee.toFixed(2)}</span>
+            </div>
+          )}
           <div className="cart-total-row">
             <span>סה״כ לתשלום</span>
             <strong>₪{total.toFixed(2)}</strong>

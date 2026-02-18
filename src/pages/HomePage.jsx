@@ -33,21 +33,12 @@ export default function HomePage() {
       {/* Top announcement strip */}
       <div className="home-announce">
         <span className="home-announce-dot" />
-        <span>משלוח חינם מעל 199 שח בהתאם לאיזורי השילוח ולתקנון האתר.</span>
+        <span>משלוח חינם מעל 279 שח בהתאם לאיזורי השילוח ולתקנון האתר.</span>
       </div>
 
       {/* Hero */}
       <header className="home-hero">
         <div className="home-hero-bg" aria-hidden />
-        <h1 className="home-hero-title">
-          <div className="home-hero-title-logo-wrap">
-            <img
-              src="/WhatsApp_Image_2026-02-16_at_15.18.13-removebg-preview.png"
-              alt="קריות-מרקט"
-              className="home-hero-title-logo"
-            />
-          </div>
-        </h1>
         {carouselSlides.length > 0 && (
           <div className="home-hero-carousel" aria-hidden>
             <img
@@ -58,7 +49,7 @@ export default function HomePage() {
             />
           </div>
         )}
-        <a href="https://wa.me/972523407171" target="_blank" rel="noopener noreferrer" className="home-hero-deals-btn">
+        <a href="https://whatsapp.com/channel/0029Vb7HETR2ZjCs5Fd01c0N" target="_blank" rel="noopener noreferrer" className="home-hero-deals-btn">
           לערוץ המבצעים החמים 24/7
         </a>
       </header>

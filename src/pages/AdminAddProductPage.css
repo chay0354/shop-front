@@ -51,6 +51,24 @@
   color: var(--text);
 }
 
+.admin-form-row-checkbox {
+  flex-direction: row;
+  align-items: center;
+}
+
+.admin-form-checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.admin-form-checkbox {
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: var(--accent);
+}
+
 .admin-form-input,
 .admin-form-select {
   width: 100%;

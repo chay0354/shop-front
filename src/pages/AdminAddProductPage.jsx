@@ -14,6 +14,7 @@ export default function AdminAddProductPage() {
   const [price, setPrice] = useState('');
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  const [hidden, setHidden] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState(null);
 
@@ -51,6 +52,7 @@ export default function AdminAddProductPage() {
     setPrice('');
     setImageFile(null);
     setImagePreview(null);
+    setHidden(false);
     setMessage(null);
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
@@ -88,6 +90,7 @@ export default function AdminAddProductPage() {
       formData.append('name_he', name_he.trim());
       if (description_he.trim()) formData.append('description_he', description_he.trim());
       formData.append('price', numPrice);
+      formData.append('hidden', hidden);
       if (imageFile) formData.append('image', imageFile);
 
       const res = await fetch(`${API}/admin/products`, {
@@ -179,6 +182,17 @@ export default function AdminAddProductPage() {
             step="0.01"
             required
           />
+        </div>
+        <div className="admin-form-row admin-form-row-checkbox">
+          <label className="admin-form-label admin-form-checkbox-label">
+            <input
+              type="checkbox"
+              checked={hidden}
+              onChange={(e) => setHidden(e.target.checked)}
+              className="admin-form-checkbox"
+            />
+            <span>הסתר מוצר (לא יוצג באתר)</span>
+          </label>
         </div>
         <div className="admin-form-row">
           <label className="admin-form-label">תמונה (אופציונלי)</label>

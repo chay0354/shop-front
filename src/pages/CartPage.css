@@ -170,6 +170,11 @@
   color: var(--accent);
 }
 
+.cart-delivery-row {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
 .cart-checkout-btn {
   display: block;
   width: 100%;

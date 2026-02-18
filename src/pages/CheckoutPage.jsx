@@ -62,7 +62,7 @@ function getAvailableDeliverySlots() {
 
 export default function CheckoutPage() {
   const navigate = useNavigate();
-  const { items, total, count, clearCart } = useCart();
+  const { items, total, deliveryFee, count, clearCart } = useCart();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [expressAvailable, setExpressAvailable] = useState(false);
@@ -276,6 +276,12 @@ export default function CheckoutPage() {
         {error && <p className="checkout-error">{error}</p>}
 
         <div className="checkout-summary">
+          {deliveryFee > 0 && (
+            <div className="checkout-delivery-row">
+              <span>דמי משלוח (מתחת ל־₪279)</span>
+              <span>₪{deliveryFee.toFixed(2)}</span>
+            </div>
+          )}
           <div className="checkout-total">
             <span>סה״כ לתשלום</span>
             <strong>₪{total.toFixed(2)}</strong>

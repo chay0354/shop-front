@@ -218,6 +218,15 @@
   color: var(--accent);
 }
 
+.checkout-delivery-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
 .checkout-submit {
   width: 100%;
   padding: 0.9rem 1rem;

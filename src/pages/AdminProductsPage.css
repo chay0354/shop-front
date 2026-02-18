@@ -142,9 +142,25 @@
   gap: 0.2rem;
 }
 
+.admin-products-item-name-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
 .admin-products-item-name {
   font-weight: 600;
   color: var(--text);
+}
+
+.admin-products-item-badge-hidden {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border-radius: 6px;
+  background: var(--text-muted);
+  color: var(--surface);
 }
 
 .admin-products-item-meta {

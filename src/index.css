@@ -85,3 +85,43 @@ ul {
   background: var(--bg);
   display: none;
 }
+
+/* Accessibility menu overrides (applied to html via data-*) */
+html[data-font-size='large'] {
+  font-size: 20px;
+}
+
+html[data-font-size='x-large'] {
+  font-size: 22px;
+}
+
+@media (max-width: 480px) {
+  html[data-font-size='large'] {
+    font-size: 18px;
+  }
+  html[data-font-size='x-large'] {
+    font-size: 20px;
+  }
+}
+
+html[data-contrast='high'] body {
+  --bg: #fff;
+  --surface: #fff;
+  --text: #000;
+  --text-muted: #333;
+  --border: #000;
+  --surface-hover: #eee;
+}
+
+html[data-contrast='high'] a {
+  color: #000;
+  font-weight: 600;
+}
+
+html[data-links='underline'] a {
+  text-decoration: underline;
+}
+
+html[data-links='underline'] a:hover {
+  text-decoration-thickness: 2px;
+}
