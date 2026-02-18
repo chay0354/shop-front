@@ -1,0 +1,71 @@
+.admin-guard {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: var(--bg);
+}
+
+.admin-guard-card {
+  width: 100%;
+  max-width: 22rem;
+  padding: 2rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+.admin-guard-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin: 0 0 1.5rem;
+  color: var(--text);
+  text-align: center;
+}
+
+.admin-guard-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.admin-guard-input {
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  direction: ltr;
+  text-align: center;
+  letter-spacing: 0.2em;
+}
+
+.admin-guard-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.2);
+}
+
+.admin-guard-btn {
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--bg);
+  background: var(--accent);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.admin-guard-btn:hover {
+  background: #d4ad2a;
+}
+
+.admin-guard-error {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #f87171;
+  text-align: center;
+}

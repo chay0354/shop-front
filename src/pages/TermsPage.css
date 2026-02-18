@@ -1,0 +1,65 @@
+.terms-page {
+  min-height: 100vh;
+  padding: 2rem 1.5rem 4rem;
+  background: var(--bg);
+}
+
+.terms-page-inner {
+  max-width: 48rem;
+  margin: 0 auto;
+}
+
+.terms-page-back {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.terms-page-back:hover {
+  text-decoration: underline;
+}
+
+.terms-page-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0 0 1.5rem;
+  color: var(--text);
+}
+
+.terms-page-content {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--text);
+}
+
+.terms-page-content p {
+  margin: 0 0 1rem;
+}
+
+.terms-page-content p:last-child {
+  margin-bottom: 0;
+}
+
+.terms-page-h2 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 2rem 0 0.75rem;
+  color: var(--text);
+}
+
+.terms-page-h2:first-of-type {
+  margin-top: 1.5rem;
+}
+
+.terms-page-h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 1.25rem 0 0.5rem;
+  color: var(--text);
+}
+
+.terms-page-content strong {
+  font-weight: 600;
+}

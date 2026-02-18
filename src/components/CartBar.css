@@ -20,8 +20,14 @@
     padding: 0.6rem 1rem;
   }
 
-  .cart-bar-logo {
-    font-size: 1.05rem;
+  .cart-bar-logo-wrap {
+    height: 44px;
+  }
+
+  .cart-bar-logo-img {
+    height: 126px;
+    margin-top: -19px;
+    max-width: 120px;
   }
 
   .cart-bar-cart {
@@ -37,19 +43,31 @@
 }
 
 .cart-bar-logo {
-  font-family: 'Secular One', var(--font);
-  font-size: 1.2rem;
-  font-weight: 400;
-  color: var(--text);
+  display: block;
   text-decoration: none;
   min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  line-height: 0;
 }
 
-.cart-bar-logo:hover {
-  color: var(--accent);
+/* Crop wrapper: same cut as hero (top 15%, bottom 50%) */
+.cart-bar-logo-wrap {
+  display: block;
+  height: 52px;
+  overflow: hidden;
+  width: fit-content;
+}
+
+.cart-bar-logo-img {
+  display: block;
+  width: auto;
+  height: 150px; /* 35% visible band = 52px */
+  max-width: 140px;
+  object-fit: contain;
+  margin-top: -22px; /* cut top 15% */
+}
+
+.cart-bar-logo:hover .cart-bar-logo-img {
+  opacity: 0.9;
 }
 
 .cart-bar-nav {
@@ -58,6 +76,27 @@
   gap: 0.75rem;
   flex-shrink: 0;
   min-width: 0;
+}
+
+.cart-bar-whatsapp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem 0.75rem;
+  color: #25D366;
+  text-decoration: none;
+  border-radius: 10px;
+  transition: background 0.2s, color 0.2s, opacity 0.2s;
+}
+
+.cart-bar-whatsapp:hover {
+  background: rgba(37, 211, 102, 0.12);
+  color: #1da851;
+}
+
+.cart-bar-whatsapp-icon {
+  display: inline-flex;
+  line-height: 0;
 }
 
 .cart-bar-admin {

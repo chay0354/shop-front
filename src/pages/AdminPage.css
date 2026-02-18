@@ -108,6 +108,266 @@
   margin: 0;
 }
 
+.admin-section-desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin: 0 0 1rem;
+}
+
+.admin-carousel-section .admin-section-desc {
+  margin-bottom: 1rem;
+}
+
+.admin-carousel-add {
+  margin-bottom: 1.25rem;
+}
+
+.admin-carousel-add-label {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.6rem 1.25rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--bg);
+  background: var(--accent);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.admin-carousel-add-label:hover {
+  background: #d4ad2a;
+}
+
+.admin-carousel-add-label input[type="file"] {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
+
+.admin-carousel-add-label:has(input:disabled) {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.admin-carousel-add-label-text {
+  pointer-events: none;
+}
+
+.admin-carousel-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.admin-carousel-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.admin-carousel-thumb {
+  width: 120px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  display: block;
+}
+
+.admin-carousel-delete {
+  padding: 0.35rem 0.75rem;
+  font-size: 0.85rem;
+  color: #f87171;
+  background: transparent;
+  border: 1px solid rgba(248, 113, 113, 0.5);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.admin-carousel-delete:hover:not(:disabled) {
+  background: rgba(248, 113, 113, 0.1);
+}
+
+.admin-carousel-delete:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.admin-cat-sub-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.admin-cat-sub-form input[type="text"],
+.admin-cat-sub-form select {
+  padding: 0.55rem 0.85rem;
+  font-size: 0.95rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  min-width: 10rem;
+}
+
+.admin-file-label {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 0.85rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.admin-file-label:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.admin-file-label input[type="file"] {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
+
+.admin-file-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+}
+
+.admin-file-hint {
+  font-size: 0.8rem;
+  color: var(--accent);
+}
+
+.admin-cat-sub-form button[type="submit"] {
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--bg);
+  background: var(--accent);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.admin-cat-sub-form button[type="submit"]:hover:not(:disabled) {
+  background: #d4ad2a;
+}
+
+.admin-cat-sub-form button[type="submit"]:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.admin-cat-sub-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.admin-cat-sub-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  padding: 0.6rem 0.9rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 0.9rem;
+}
+
+.admin-cat-sub-preview {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--surface-hover);
+}
+
+.admin-cat-sub-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.admin-cat-sub-icon {
+  font-size: 1.25rem;
+}
+
+.admin-cat-sub-name {
+  font-weight: 500;
+  color: var(--text);
+}
+
+.admin-cat-sub-meta {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.admin-hidden-file {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.admin-cat-sub-upload-btn {
+  padding: 0.35rem 0.65rem;
+  font-size: 0.8rem;
+  color: var(--accent);
+  background: transparent;
+  border: 1px solid rgba(201, 162, 39, 0.5);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.admin-cat-sub-upload-btn:hover:not(:disabled) {
+  background: rgba(201, 162, 39, 0.1);
+}
+
+.admin-cat-sub-upload-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.admin-cat-sub-delete {
+  padding: 0.35rem 0.65rem;
+  font-size: 0.8rem;
+  color: #f87171;
+  background: transparent;
+  border: 1px solid rgba(248, 113, 113, 0.5);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.admin-cat-sub-delete:hover:not(:disabled) {
+  background: rgba(248, 113, 113, 0.1);
+}
+
+.admin-cat-sub-delete:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 /* Orders table */
 .admin-table-wrap {
   overflow-x: auto;

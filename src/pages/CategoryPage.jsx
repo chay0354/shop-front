@@ -27,7 +27,11 @@ export default function CategoryPage() {
       {/* Category hero */}
       <header className="category-hero">
         <div className="category-hero-icon-wrap">
-          {category.icon && <span className="category-hero-icon" aria-hidden>{category.icon}</span>}
+          {category.image_url ? (
+            <img src={category.image_url} alt="" className="category-hero-image" />
+          ) : category.icon ? (
+            <span className="category-hero-icon" aria-hidden>{category.icon}</span>
+          ) : null}
         </div>
         <h1 className="category-hero-title">{category.name_he}</h1>
         <p className="category-hero-subtitle">בחרו תת־קטגוריה והתחילו לגלוש במוצרים</p>
@@ -56,11 +60,13 @@ export default function CategoryPage() {
                   style={{ '--delay': `${index * 0.04}s` }}
                 >
                   <span className="subcategory-card-accent" />
+                  {sub.image_url && (
+                    <div className="subcategory-card-image-wrap">
+                      <img src={sub.image_url} alt="" className="subcategory-card-image" />
+                    </div>
+                  )}
                   <div className="subcategory-card-top">
                     <span className="subcategory-card-name">{sub.name_he}</span>
-                    {products.length > 0 && (
-                      <span className="subcategory-card-badge">{products.length} מוצרים</span>
-                    )}
                   </div>
                   {previewText && (
                     <p className="subcategory-card-preview" title={previewText}>{previewText}</p>
@@ -76,13 +82,6 @@ export default function CategoryPage() {
           </>
         )}
       </main>
-
-      {/* Trust line */}
-      <footer className="category-footer">
-        <span>משלוח חינם מעל ₪99</span>
-        <span className="category-footer-dot" />
-        <span>שירות מהיר</span>
-      </footer>
     </div>
   );
 }

@@ -2,6 +2,35 @@
   width: 100%;
   min-width: 0;
   overflow-x: hidden;
+  position: relative;
+}
+
+/* Fixed WhatsApp button – bottom right, visible on scroll */
+.floating-whatsapp {
+  position: fixed;
+  bottom: 1.25rem;
+  right: 1.25rem;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  background: #25D366;
+  color: #fff;
+  border-radius: 50%;
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.45);
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+.floating-whatsapp:hover {
+  background: #1da851;
+  transform: scale(1.06);
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.5);
+}
+
+.floating-whatsapp svg {
+  display: block;
 }
 
 .loading,

@@ -1,0 +1,65 @@
+.terms-gate-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+}
+
+.terms-gate-card {
+  width: 100%;
+  max-width: 28rem;
+  padding: 2rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+}
+
+.terms-gate-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 1.25rem;
+  color: var(--text);
+  text-align: center;
+}
+
+.terms-gate-text {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text);
+  margin: 0 0 1.5rem;
+  text-align: center;
+}
+
+.terms-gate-link {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.terms-gate-link:hover {
+  color: #d4ad2a;
+}
+
+.terms-gate-btn {
+  display: block;
+  width: 100%;
+  padding: 0.85rem 1.25rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--bg);
+  background: var(--accent);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.terms-gate-btn:hover {
+  background: #d4ad2a;
+}
