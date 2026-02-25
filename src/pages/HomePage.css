@@ -135,8 +135,10 @@
 }
 
 .home-hero-carousel {
+  position: relative;
   margin-top: 1.25rem;
   max-width: 100%;
+  height: 280px;
   border-radius: 12px;
   overflow: hidden;
   background: var(--surface);
@@ -144,11 +146,26 @@
 }
 
 .home-hero-carousel-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: block;
   width: 100%;
+  height: 100%;
   max-height: 280px;
-  object-fit: contain;
   margin: 0 auto;
+  object-fit: contain;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  pointer-events: none;
+}
+
+.home-hero-carousel-img[data-active="true"] {
+  opacity: 1;
+  z-index: 1;
+  pointer-events: auto;
 }
 
 .home-hero-deals-btn {

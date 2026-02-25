@@ -3,6 +3,46 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (function() {
+        if (typeof window === 'undefined') return;
+        var h = window.location.hostname;
+        if (h !== 'localhost' && h !== '127.0.0.1') return;
+        var sentryUrl = 'sentry.io';
+        var fakeRes = { ok: true, status: 200, json: function() { return Promise.resolve({}); }, text: function() { return Promise.resolve(''); } };
+        var origFetch = window.fetch;
+        window.fetch = function(u, o) {
+          var url = (u && u.url) || (typeof u === 'string' ? u : '');
+          if (String(url).indexOf(sentryUrl) !== -1) {
+            if (typeof console !== 'undefined' && console.debug) console.debug('[shop] Sentry request blocked (fetch)');
+            return Promise.resolve(fakeRes);
+          }
+          return origFetch.apply(this, arguments);
+        };
+        var OrigXHR = window.XMLHttpRequest;
+        if (OrigXHR) {
+          window.XMLHttpRequest = function() {
+            var xhr = new OrigXHR();
+            var origOpen = xhr.open;
+            xhr.open = function(method, url) {
+              xhr._url = url;
+              return origOpen.apply(this, arguments);
+            };
+            var origSend = xhr.send;
+            xhr.send = function() {
+              if (String(xhr._url || '').indexOf(sentryUrl) !== -1) {
+                if (typeof console !== 'undefined' && console.debug) console.debug('[shop] Sentry request blocked (XHR)');
+                setTimeout(function() { xhr.readyState = 4; xhr.status = 200; if (xhr.onreadystatechange) xhr.onreadystatechange(); }, 0);
+                return;
+              }
+              return origSend.apply(this, arguments);
+            };
+            return xhr;
+          };
+        }
+        if (typeof console !== 'undefined' && console.debug) console.debug('[shop] Sentry blocking active for localhost');
+      })();
+    </script>
     <title>החנות | קטגוריות</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

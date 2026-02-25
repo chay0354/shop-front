@@ -26,8 +26,6 @@ export default function HomePage() {
     return () => clearInterval(t);
   }, [carouselSlides.length]);
 
-  const currentSlide = carouselSlides[carouselIndex];
-
   return (
     <div className="home-page">
       {/* Top announcement strip */}
@@ -41,12 +39,15 @@ export default function HomePage() {
         <div className="home-hero-bg" aria-hidden />
         {carouselSlides.length > 0 && (
           <div className="home-hero-carousel" aria-hidden>
-            <img
-              key={currentSlide?.id}
-              src={currentSlide?.image_url}
-              alt=""
-              className="home-hero-carousel-img"
-            />
+            {carouselSlides.map((slide, i) => (
+              <img
+                key={slide.id}
+                src={slide.image_url}
+                alt=""
+                className="home-hero-carousel-img"
+                data-active={i === carouselIndex}
+              />
+            ))}
           </div>
         )}
         <a href="https://whatsapp.com/channel/0029Vb7HETR2ZjCs5Fd01c0N" target="_blank" rel="noopener noreferrer" className="home-hero-deals-btn">

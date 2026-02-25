@@ -21,6 +21,7 @@ import SubcategoryPage from './pages/SubcategoryPage';
 import CartPage from './pages/CartPage';
 import CheckoutPage from './pages/CheckoutPage';
 import OrderConfirmationPage from './pages/OrderConfirmationPage';
+import TestPaymentPage from './pages/TestPaymentPage';
 import AdminGuard from './components/AdminGuard';
 import TermsGate from './components/TermsGate';
 import MainLayout from './components/MainLayout';
@@ -56,7 +57,7 @@ export default function App() {
   return (
     <StoreContext.Provider value={store}>
       <CartProvider>
-        <BrowserRouter>
+        <BrowserRouter future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
           <div className="app-layout">
             <TermsGate>
               <CartBar />
@@ -74,6 +75,7 @@ export default function App() {
                 <Route path="/subcategory/:subcategoryId" element={<SubcategoryPage />} />
                 <Route path="/cart" element={<CartPage />} />
                 <Route path="/checkout" element={<CheckoutPage />} />
+                <Route path="/test-payment" element={<TestPaymentPage />} />
                 <Route path="/order-confirmation/:orderId" element={<OrderConfirmationPage />} />
                 <Route path="/terms" element={<TermsPage />} />
               </Route>
