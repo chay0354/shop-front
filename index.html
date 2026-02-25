@@ -8,13 +8,23 @@
         if (typeof window === 'undefined') return;
         var h = window.location.hostname;
         if (h !== 'localhost' && h !== '127.0.0.1') return;
-        var sentryUrl = 'sentry.io';
-        var fakeRes = { ok: true, status: 200, json: function() { return Promise.resolve({}); }, text: function() { return Promise.resolve(''); } };
+        function isSentryUrl(url) {
+          var s = String(url || '');
+          return s.indexOf('sentry.io') !== -1 || s.indexOf('ingest.us.sentry') !== -1;
+        }
+        var fakeRes = {
+          ok: true,
+          status: 200,
+          headers: { get: function() { return null; } },
+          json: function() { return Promise.resolve({}); },
+          text: function() { return Promise.resolve(''); },
+          clone: function() { return this; }
+        };
         var origFetch = window.fetch;
         window.fetch = function(u, o) {
-          var url = (u && u.url) || (typeof u === 'string' ? u : '');
-          if (String(url).indexOf(sentryUrl) !== -1) {
-            if (typeof console !== 'undefined' && console.debug) console.debug('[shop] Sentry request blocked (fetch)');
+          var url = (u && (u.url != null ? u.url : u)) || (typeof u === 'string' ? u : '');
+          if (isSentryUrl(url)) {
+            if (typeof console !== 'undefined' && console.debug) console.debug('[shop] Sentry blocked (fetch)');
             return Promise.resolve(fakeRes);
           }
           return origFetch.apply(this, arguments);
@@ -30,8 +40,8 @@
             };
             var origSend = xhr.send;
             xhr.send = function() {
-              if (String(xhr._url || '').indexOf(sentryUrl) !== -1) {
-                if (typeof console !== 'undefined' && console.debug) console.debug('[shop] Sentry request blocked (XHR)');
+              if (isSentryUrl(xhr._url)) {
+                if (typeof console !== 'undefined' && console.debug) console.debug('[shop] Sentry blocked (XHR)');
                 setTimeout(function() { xhr.readyState = 4; xhr.status = 200; if (xhr.onreadystatechange) xhr.onreadystatechange(); }, 0);
                 return;
               }

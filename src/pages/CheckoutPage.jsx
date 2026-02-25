@@ -207,10 +207,12 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     if (step !== 'card' || !lowProfileId) return;
+    const scriptId = 'cardcom-3ds-script';
+    if (document.getElementById(scriptId)) return;
     const script = document.createElement('script');
-    script.src = `${CARDCOM_SCRIPT_URL}?v=${Date.now()}`;
+    script.id = scriptId;
+    script.src = CARDCOM_SCRIPT_URL;
     document.head.appendChild(script);
-    return () => { script.remove(); };
   }, [step, lowProfileId]);
 
   useEffect(() => {

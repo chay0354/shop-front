@@ -40,13 +40,17 @@ export default function HomePage() {
         {carouselSlides.length > 0 && (
           <div className="home-hero-carousel" aria-hidden>
             {carouselSlides.map((slide, i) => (
-              <img
+              <div
                 key={slide.id}
-                src={slide.image_url}
-                alt=""
-                className="home-hero-carousel-img"
+                className="home-hero-carousel-slide"
                 data-active={i === carouselIndex}
-              />
+              >
+                <img
+                  src={slide.image_url}
+                  alt=""
+                  className="home-hero-carousel-img"
+                />
+              </div>
             ))}
           </div>
         )}
