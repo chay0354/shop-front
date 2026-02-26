@@ -106,6 +106,9 @@ export default function AdminPage() {
   const [carousel, setCarousel] = useState([]);
   const [carouselUploading, setCarouselUploading] = useState(false);
   const [carouselDeletingId, setCarouselDeletingId] = useState(null);
+  const [carouselBottom, setCarouselBottom] = useState([]);
+  const [carouselBottomUploading, setCarouselBottomUploading] = useState(false);
+  const [carouselBottomDeletingId, setCarouselBottomDeletingId] = useState(null);
   const [adminCategories, setAdminCategories] = useState([]);
   const [adminSubcategories, setAdminSubcategories] = useState([]);
   const [categorySaving, setCategorySaving] = useState(false);
@@ -133,6 +136,13 @@ export default function AdminPage() {
       .catch(() => setCarousel([]));
   };
 
+  const loadCarouselBottom = () => {
+    return fetch(`${API}/admin/carousel/bottom`)
+      .then((r) => (r.ok ? r.json() : []))
+      .then(setCarouselBottom)
+      .catch(() => setCarouselBottom([]));
+  };
+
   const loadAdminCategories = () => {
     return fetch(`${API}/admin/categories`)
       .then((r) => (r.ok ? r.json() : []))
@@ -155,6 +165,10 @@ export default function AdminPage() {
 
   useEffect(() => {
     loadCarousel();
+  }, []);
+
+  useEffect(() => {
+    loadCarouselBottom();
   }, []);
 
   useEffect(() => {
@@ -269,6 +283,69 @@ export default function AdminPage() {
           </div>
         ) : (
           <p className="admin-section-empty">אין תמונות בקרוסלה. הוסף תמונה למעלה.</p>
+        )}
+      </section>
+
+      <section className="admin-section admin-carousel-section">
+        <h2 className="admin-section-title">קרוסלת תחתונה (מתחת לקטגוריות)</h2>
+        <p className="admin-section-desc">תמונות נפרדות מהקרוסלה העליונה. מוצגות בקובייה אחת מתחת לרשת הקטגוריות.</p>
+        <div className="admin-carousel-add">
+          <label className="admin-carousel-add-label">
+            <input
+              type="file"
+              accept="image/jpeg,image/png,image/webp,image/gif"
+              aria-label="בחר תמונה לקרוסלה תחתונה"
+              disabled={carouselBottomUploading}
+              onChange={async (e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+                setCarouselBottomUploading(true);
+                try {
+                  const fd = new FormData();
+                  fd.append('image', file);
+                  const res = await fetch(`${API}/admin/carousel/bottom`, { method: 'POST', body: fd });
+                  if (!res.ok) throw new Error();
+                  await loadCarouselBottom();
+                } catch (err) {
+                  alert('שגיאה בהוספת תמונה');
+                } finally {
+                  setCarouselBottomUploading(false);
+                  e.target.value = '';
+                }
+              }}
+            />
+            <span className="admin-carousel-add-label-text">{carouselBottomUploading ? 'מעלה...' : 'בחר תמונה להוספה'}</span>
+          </label>
+        </div>
+        {carouselBottom.length > 0 ? (
+          <div className="admin-carousel-list">
+            {carouselBottom.map((slide) => (
+              <div key={slide.id} className="admin-carousel-item">
+                <img src={slide.image_url} alt="" className="admin-carousel-thumb" />
+                <button
+                  type="button"
+                  className="admin-carousel-delete"
+                  disabled={carouselBottomDeletingId === slide.id}
+                  onClick={async () => {
+                    setCarouselBottomDeletingId(slide.id);
+                    try {
+                      const res = await fetch(`${API}/admin/carousel/bottom/${slide.id}`, { method: 'DELETE' });
+                      if (!res.ok) throw new Error();
+                      await loadCarouselBottom();
+                    } catch (err) {
+                      alert('שגיאה במחיקה');
+                    } finally {
+                      setCarouselBottomDeletingId(null);
+                    }
+                  }}
+                >
+                  {carouselBottomDeletingId === slide.id ? '...' : 'מחק'}
+                </button>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="admin-section-empty">אין תמונות בקרוסלה התחתונה. הוסף תמונה למעלה.</p>
         )}
       </section>
 

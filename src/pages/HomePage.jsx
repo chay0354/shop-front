@@ -10,6 +10,8 @@ export default function HomePage() {
   const { categories } = useStore();
   const [carouselSlides, setCarouselSlides] = useState([]);
   const [carouselIndex, setCarouselIndex] = useState(0);
+  const [bottomCarouselSlides, setBottomCarouselSlides] = useState([]);
+  const [bottomCarouselIndex, setBottomCarouselIndex] = useState(0);
 
   useEffect(() => {
     fetch(`${API}/carousel`)
@@ -19,12 +21,27 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
+    fetch(`${API}/carousel/bottom`)
+      .then((r) => (r.ok ? r.json() : []))
+      .then(setBottomCarouselSlides)
+      .catch(() => setBottomCarouselSlides([]));
+  }, []);
+
+  useEffect(() => {
     if (carouselSlides.length <= 1) return;
     const t = setInterval(() => {
       setCarouselIndex((i) => (i + 1) % carouselSlides.length);
     }, CAROUSEL_INTERVAL_MS);
     return () => clearInterval(t);
   }, [carouselSlides.length]);
+
+  useEffect(() => {
+    if (bottomCarouselSlides.length <= 1) return;
+    const t = setInterval(() => {
+      setBottomCarouselIndex((i) => (i + 1) % bottomCarouselSlides.length);
+    }, CAROUSEL_INTERVAL_MS);
+    return () => clearInterval(t);
+  }, [bottomCarouselSlides.length]);
 
   return (
     <div className="home-page">
@@ -81,6 +98,23 @@ export default function HomePage() {
               </Link>
             ))}
         </div>
+
+        {/* Bottom carousel — same size as one category tile */}
+        {bottomCarouselSlides.length > 0 && (
+          <div className="home-bottom-carousel-wrap" aria-hidden>
+            <div className="home-bottom-carousel">
+              {bottomCarouselSlides.map((slide, i) => (
+                <div
+                  key={slide.id}
+                  className="home-bottom-carousel-slide"
+                  data-active={i === bottomCarouselIndex}
+                >
+                  <img src={slide.image_url} alt="" className="home-bottom-carousel-img" />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </main>
     </div>
   );
