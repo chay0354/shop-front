@@ -4,7 +4,7 @@ import { useStore } from '../StoreContext';
 import './HomePage.css';
 
 const API = import.meta.env.VITE_API_URL ? `${String(import.meta.env.VITE_API_URL).replace(/\/$/, '')}/api` : '/api';
-const CAROUSEL_INTERVAL_MS = 2000;
+const CAROUSEL_INTERVAL_MS = 2000; /* 2 seconds per slide (hero + bottom carousels) */
 
 export default function HomePage() {
   const { categories } = useStore();
