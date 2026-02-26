@@ -227,6 +227,28 @@
   color: var(--text-muted);
 }
 
+.checkout-terms-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.checkout-terms-label input {
+  flex-shrink: 0;
+}
+
+.checkout-terms-link {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.checkout-terms-link:hover {
+  color: #d4ad2a;
+}
+
 .checkout-submit {
   width: 100%;
   padding: 0.9rem 1rem;

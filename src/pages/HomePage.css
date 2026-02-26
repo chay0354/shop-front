@@ -85,9 +85,37 @@
     padding: 0 1rem 2rem;
   }
 
+  .categories-grid {
+    gap: 0.75rem;
+  }
+
   .category-tile {
-    min-height: 140px;
-    padding: 1.25rem 0.75rem;
+    min-height: 115px;
+    padding: 0.85rem 0.65rem;
+    background: #f0f0f2;
+    border-color: rgba(0, 0, 0, 0.07);
+  }
+
+  .category-tile:hover {
+    background: #e8e8ec;
+    border-color: rgba(201, 162, 39, 0.22);
+  }
+
+  .category-tile-icon-wrap {
+    width: 3.75rem;
+    height: 3.75rem;
+    margin-bottom: 0.5rem;
+    background: rgba(201, 162, 39, 0.05);
+    border-radius: 10px;
+  }
+
+  .category-tile-icon,
+  .category-tile-image {
+    font-size: 2rem;
+  }
+
+  .category-tile-name {
+    font-size: 0.95rem;
   }
 
   .home-footer {
@@ -321,8 +349,8 @@
   justify-content: flex-start;
   min-height: 180px;
   padding: 1.5rem 1rem 1.25rem;
-  background: var(--surface);
-  border: 1px solid var(--border);
+  background: #f2f2f4;
+  border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 16px;
   text-align: center;
   transition: background 0.2s, border-color 0.2s, transform 0.2s, box-shadow 0.2s;
@@ -340,16 +368,16 @@
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  background: linear-gradient(90deg, transparent, rgba(184, 134, 11, 0.7), transparent);
   opacity: 0;
   transition: opacity 0.2s;
 }
 
 .category-tile:hover {
-  background: var(--surface-hover);
-  border-color: rgba(201, 162, 39, 0.4);
+  background: #e8e8ec;
+  border-color: rgba(201, 162, 39, 0.28);
   transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
 }
 
 .category-tile:hover::before {
@@ -368,19 +396,19 @@
 }
 
 .category-tile-icon-wrap {
-  width: 3.5rem;
-  height: 3.5rem;
+  width: 4.5rem;
+  height: 4.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 0.75rem;
-  background: rgba(201, 162, 39, 0.08);
+  background: rgba(201, 162, 39, 0.05);
   border-radius: 12px;
 }
 
 .category-tile-icon,
 .category-tile-image {
-  font-size: 2rem;
+  font-size: 2.5rem;
   line-height: 1;
 }
 
@@ -415,7 +443,7 @@
   bottom: 0.75rem;
   left: 0.75rem;
   font-size: 1rem;
-  color: var(--accent);
+  color: rgba(184, 134, 11, 0.8);
   opacity: 0;
   transform: translateX(4px);
   transition: opacity 0.2s, transform 0.2s;

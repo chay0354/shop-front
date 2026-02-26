@@ -117,6 +117,7 @@ export default function CheckoutPage() {
   const [paymentLoading, setPaymentLoading] = useState(false);
   const [cardError, setCardError] = useState(null);
   const [masterFrameLoaded, setMasterFrameLoaded] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
   const masterFrameRef = useRef(null);
   const orderPayloadRef = useRef(null);
 
@@ -609,7 +610,19 @@ export default function CheckoutPage() {
             <span>סה״כ לתשלום</span>
             <strong>₪{total.toFixed(2)}</strong>
           </div>
-          <button type="submit" className="checkout-submit" disabled={loading}>
+          <label className="checkout-terms-label">
+            <input
+              type="checkbox"
+              checked={termsAccepted}
+              onChange={(e) => setTermsAccepted(e.target.checked)}
+              aria-describedby="checkout-terms-desc"
+            />
+            <span id="checkout-terms-desc">
+              אני מאשר/ת את{' '}
+              <a href="/terms" target="_blank" rel="noopener noreferrer" className="checkout-terms-link">התקנון</a>
+            </span>
+          </label>
+          <button type="submit" className="checkout-submit" disabled={loading || !termsAccepted}>
             {loading ? 'שולח...' : 'אישור ההזמנה'}
           </button>
         </div>

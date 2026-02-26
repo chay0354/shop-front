@@ -21,9 +21,6 @@ export default function CartBar() {
           </span>
         </a>
       </nav>
-      <Link to="/test-payment" className="cart-bar-test-order" aria-label="הזמנת בדיקה 5 ₪">
-        הזמנת בדיקה
-      </Link>
       <Link to="/" className="cart-bar-logo" aria-label="קריות-מרקט">
         <span className="cart-bar-logo-wrap">
           <img src="/WhatsApp_Image_2026-02-16_at_15.18.13-removebg-preview.png" alt="קריות-מרקט" className="cart-bar-logo-img" />
