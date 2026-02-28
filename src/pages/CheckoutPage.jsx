@@ -98,6 +98,7 @@ export default function CheckoutPage() {
   const [form, setForm] = useState({
     customer_name: '',
     customer_phone: '',
+    customer_email: '',
     delivery_address: '',
     delivery_city: '',
     payment_method: 'cash',
@@ -121,7 +122,7 @@ export default function CheckoutPage() {
   const masterFrameRef = useRef(null);
   const orderPayloadRef = useRef(null);
 
-  const MAX_ORDERS_PER_SLOT = 5;
+  const MAX_ORDERS_PER_SLOT = 1;
 
   useEffect(() => {
     const cached = getCheckoutCache();
@@ -298,6 +299,7 @@ export default function CheckoutPage() {
   const orderPayload = {
     customer_name: form.customer_name.trim(),
     customer_phone: form.customer_phone.trim(),
+    customer_email: form.customer_email.trim() || undefined,
     delivery_address: form.delivery_address.trim(),
     delivery_city: form.delivery_city.trim(),
     payment_method: form.payment_method,
@@ -519,6 +521,17 @@ export default function CheckoutPage() {
                 onChange={handleChange}
                 required
                 placeholder="050-0000000"
+                className="checkout-input"
+              />
+            </label>
+            <label className="checkout-label">
+              <span>אימייל (לשליחת חשבונית)</span>
+              <input
+                type="email"
+                name="customer_email"
+                value={form.customer_email}
+                onChange={handleChange}
+                placeholder="email@example.com"
                 className="checkout-input"
               />
             </label>

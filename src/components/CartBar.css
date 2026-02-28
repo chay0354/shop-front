@@ -9,31 +9,31 @@
   width: 100%;
   max-width: 100%;
   min-width: 0;
-  padding: 0.65rem 1.25rem;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
+  padding: 0.25rem 1.25rem;
+  background: #d8d8d8;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
 }
 
 @media (max-width: 480px) {
   .cart-bar {
-    padding: 0.6rem 1rem;
+    padding: 0.2rem 1rem;
   }
 
   .cart-bar-logo-wrap {
-    height: 44px;
+    height: 32px;
   }
 
   .cart-bar-logo-img {
-    height: 126px;
-    margin-top: -19px;
-    max-width: 120px;
+    height: 95px;
+    margin-top: -14px;
+    max-width: 95px;
   }
 
   .cart-bar-cart {
-    padding: 0.5rem 0.65rem;
-    min-height: 44px;
-    min-width: 44px;
+    padding: 0.3rem 0.5rem;
+    min-height: 32px;
+    min-width: 32px;
     justify-content: center;
   }
 
@@ -52,7 +52,7 @@
 /* Crop wrapper: same cut as hero (top 15%, bottom 50%) */
 .cart-bar-logo-wrap {
   display: block;
-  height: 52px;
+  height: 34px;
   overflow: hidden;
   width: fit-content;
 }
@@ -60,10 +60,10 @@
 .cart-bar-logo-img {
   display: block;
   width: auto;
-  height: 150px; /* 35% visible band = 52px */
-  max-width: 140px;
+  height: 105px;
+  max-width: 105px;
   object-fit: contain;
-  margin-top: -22px; /* cut top 15% */
+  margin-top: -14px;
 }
 
 .cart-bar-logo:hover .cart-bar-logo-img {
