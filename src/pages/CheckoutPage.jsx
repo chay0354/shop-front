@@ -26,66 +26,19 @@ function getCheckoutCache() {
   }
 }
 
-function setCheckoutCache(expressAvailable, deliverySlotCounts) {
+function setCheckoutCache(expressAvailable, deliverySlotCounts, slotLimits = {}, ordersBlocked = false) {
   try {
     sessionStorage.setItem(CHECKOUT_CACHE_KEY, JSON.stringify({
       at: Date.now(),
       expressAvailable,
       deliverySlotCounts: deliverySlotCounts || {},
+      slotLimits: slotLimits && typeof slotLimits === 'object' ? slotLimits : {},
+      ordersBlocked: !!ordersBlocked,
     }));
   } catch (_) {}
 }
 
-const DELIVERY_HOUR_START = 8;
-const DELIVERY_HOUR_END = 20;
-const MIN_HOURS_FROM_NOW = 2;
-
-function formatDateKey(d) {
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${y}-${m}-${day}`;
-}
-
-function getAvailableDeliverySlots() {
-  const now = new Date();
-  const currentHour = now.getHours();
-  const isOutsideWindow = currentHour >= DELIVERY_HOUR_END || currentHour < DELIVERY_HOUR_START;
-  const slots = [];
-  const hourLabel = (h) => `${String(h).padStart(2, '0')}:00`;
-
-  if (isOutsideWindow) {
-    const tomorrow = new Date(now);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const dateKey = formatDateKey(tomorrow);
-    for (let h = DELIVERY_HOUR_START; h <= DELIVERY_HOUR_END; h++) {
-      slots.push({ value: `${dateKey} ${h}`, label: `מחר ${hourLabel(h)}` });
-    }
-    return slots;
-  }
-
-  const nowPlus2 = new Date(now.getTime() + MIN_HOURS_FROM_NOW * 60 * 60 * 1000);
-  const h2 = nowPlus2.getHours();
-  const m2 = nowPlus2.getMinutes();
-  const earliest = m2 > 0 ? h2 + 1 : h2;
-
-  if (earliest > DELIVERY_HOUR_END) {
-    const tomorrow = new Date(now);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const dateKey = formatDateKey(tomorrow);
-    for (let h = DELIVERY_HOUR_START; h <= DELIVERY_HOUR_END; h++) {
-      slots.push({ value: `${dateKey} ${h}`, label: `מחר ${hourLabel(h)}` });
-    }
-    return slots;
-  }
-
-  const today = formatDateKey(now);
-  const start = Math.max(DELIVERY_HOUR_START, earliest);
-  for (let h = start; h <= DELIVERY_HOUR_END; h++) {
-    slots.push({ value: `${today} ${h}`, label: hourLabel(h) });
-  }
-  return slots;
-}
+import { getAvailableDeliverySlots } from '../utils/deliverySlots';
 
 export default function CheckoutPage() {
   const navigate = useNavigate();
@@ -94,6 +47,8 @@ export default function CheckoutPage() {
   const [error, setError] = useState(null);
   const [expressAvailable, setExpressAvailable] = useState(false);
   const [deliverySlotCounts, setDeliverySlotCounts] = useState({});
+  const [slotLimits, setSlotLimits] = useState({});
+  const [ordersBlocked, setOrdersBlocked] = useState(false);
   const [deliverySlots] = useState(() => getAvailableDeliverySlots());
   const [form, setForm] = useState({
     customer_name: '',
@@ -122,13 +77,13 @@ export default function CheckoutPage() {
   const masterFrameRef = useRef(null);
   const orderPayloadRef = useRef(null);
 
-  const MAX_ORDERS_PER_SLOT = 1;
-
   useEffect(() => {
     const cached = getCheckoutCache();
     if (cached) {
       setExpressAvailable(cached.expressAvailable === true);
       setDeliverySlotCounts(cached.deliverySlotCounts || {});
+      setSlotLimits(cached.slotLimits || {});
+      setOrdersBlocked(cached.ordersBlocked === true);
       return;
     }
     Promise.all([
@@ -138,26 +93,41 @@ export default function CheckoutPage() {
         return v;
       }).catch(() => { setExpressAvailable(false); return false; }),
       fetch(`${API}/checkout/delivery-slot-counts`).then((r) => r.json()).then((data) => {
-        const v = data || {};
-        setDeliverySlotCounts(v);
-        return v;
-      }).catch(() => { setDeliverySlotCounts({}); return {}; }),
-    ]).then(([expressAvailable, deliverySlotCounts]) => {
-      setCheckoutCache(expressAvailable, deliverySlotCounts);
+        const counts = data?.counts ?? data ?? {};
+        const limits = data?.slot_limits ?? {};
+        setDeliverySlotCounts(counts);
+        setSlotLimits(limits);
+        return { counts, slotLimits: limits };
+      }).catch(() => { setDeliverySlotCounts({}); setSlotLimits({}); return { counts: {}, slotLimits: {} }; }),
+      fetch(`${API}/checkout/orders-available`).then((r) => r.json()).then((data) => {
+        const blocked = data.available !== true;
+        setOrdersBlocked(blocked);
+        return blocked;
+      }).catch(() => { setOrdersBlocked(false); return false; }),
+    ]).then(([expressAvailable, slotData, ordersBlocked]) => {
+      setCheckoutCache(expressAvailable, slotData.counts || {}, slotData.slotLimits || {}, ordersBlocked);
     });
   }, []);
 
   useEffect(() => {
     if (!form.delivery_time_slot) return;
     const count = deliverySlotCounts[form.delivery_time_slot] || 0;
-    if (count >= MAX_ORDERS_PER_SLOT) {
+    const hourPart = form.delivery_time_slot.split(/\s+/).pop();
+    const hour = parseInt(hourPart, 10);
+    const maxForHour = (Number.isFinite(hour) && slotLimits[hour] !== undefined) ? slotLimits[hour] : 1;
+    if (count >= maxForHour) {
       setForm((f) => ({ ...f, delivery_time_slot: '' }));
     }
-  }, [deliverySlotCounts, form.delivery_time_slot]);
+  }, [deliverySlotCounts, slotLimits, form.delivery_time_slot]);
 
-  const availableSlots = deliverySlots.filter(
-    (slot) => (deliverySlotCounts[slot.value] || 0) < MAX_ORDERS_PER_SLOT
-  );
+  const availableSlots = deliverySlots.filter((slot) => {
+    const count = deliverySlotCounts[slot.value] || 0;
+    const hourPart = slot.value.split(/\s+/).pop();
+    const hour = parseInt(hourPart, 10);
+    const maxForHour = (Number.isFinite(hour) && slotLimits[hour] !== undefined) ? slotLimits[hour] : 1;
+    if (maxForHour === 0) return false;
+    return count < maxForHour;
+  });
 
   useEffect(() => {
     if (step !== 'card' || !initPaymentPending || lowProfileId) return;
@@ -336,6 +306,10 @@ export default function CheckoutPage() {
       return;
     }
     if (form.payment_method === 'card') {
+      if (ordersBlocked) {
+        setError('משלוחים לא זמינים כעת, נסה שוב מאוחר יותר');
+        return;
+      }
       orderPayloadRef.current = orderPayload;
       setCardError(null);
       setLowProfileId(null);
@@ -497,6 +471,11 @@ export default function CheckoutPage() {
 
       {showDelivery && (
       <form onSubmit={handleSubmit} className="checkout-form">
+        {ordersBlocked && (
+          <p className="checkout-blocked-msg" role="alert">
+            משלוחים לא זמינים כעת, נסה שוב מאוחר יותר
+          </p>
+        )}
         <section className="checkout-section">
           <h2 className="checkout-section-title">פרטי משלוח</h2>
           <div className="checkout-fields">
@@ -635,8 +614,8 @@ export default function CheckoutPage() {
               <a href="/terms" target="_blank" rel="noopener noreferrer" className="checkout-terms-link">התקנון</a>
             </span>
           </label>
-          <button type="submit" className="checkout-submit" disabled={loading || !termsAccepted}>
-            {loading ? 'שולח...' : 'אישור ההזמנה'}
+          <button type="submit" className="checkout-submit" disabled={loading || !termsAccepted || ordersBlocked}>
+            {loading ? 'שולח...' : ordersBlocked ? 'משלוחים לא זמינים' : 'אישור ההזמנה'}
           </button>
         </div>
       </form>

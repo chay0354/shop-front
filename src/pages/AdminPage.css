@@ -118,6 +118,125 @@
   margin-bottom: 1rem;
 }
 
+.admin-settings-section .admin-section-desc {
+  margin-bottom: 1rem;
+}
+
+.admin-settings-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.admin-settings-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+}
+
+.admin-settings-row.admin-settings-actions {
+  margin-bottom: 0;
+}
+
+.admin-settings-slot-limits {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.admin-settings-slot-limits-title {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.admin-settings-block-orders {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.75rem 0 1rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.admin-settings-block-checkbox {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.admin-settings-slot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(5.5rem, 1fr));
+  gap: 0.5rem 1rem;
+}
+
+.admin-settings-slot-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.admin-settings-slot-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.admin-settings-slot-input {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.admin-settings-express-row {
+  align-items: center;
+}
+
+.admin-settings-remaining {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin-right: 0.5rem;
+}
+
+.admin-settings-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+}
+
+.admin-settings-input {
+  width: 5rem;
+  padding: 0.5rem 0.65rem;
+  font-size: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-family: var(--font);
+}
+
+.admin-settings-save {
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  font-family: var(--font);
+  font-weight: 600;
+  color: var(--bg);
+  background: var(--accent);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.admin-settings-save:hover:not(:disabled) {
+  background: #d4ad2a;
+}
+
+.admin-settings-save:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
 .admin-carousel-add {
   margin-bottom: 1.25rem;
 }
