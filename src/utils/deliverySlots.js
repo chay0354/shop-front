@@ -1,5 +1,5 @@
 export const DELIVERY_HOUR_START = 8;
-export const DELIVERY_HOUR_END = 20;
+export const DELIVERY_HOUR_END = 19;
 const MIN_HOURS_FROM_NOW = 2;
 
 export function formatDateKey(d) {
@@ -15,13 +15,14 @@ export function getAvailableDeliverySlots() {
   const isOutsideWindow = currentHour >= DELIVERY_HOUR_END || currentHour < DELIVERY_HOUR_START;
   const slots = [];
   const hourLabel = (h) => `${String(h).padStart(2, '0')}:00`;
+  const rangeLabel = (h) => `${hourLabel(h)}-${hourLabel(h + 1)}`;
 
   if (isOutsideWindow) {
     const tomorrow = new Date(now);
     tomorrow.setDate(tomorrow.getDate() + 1);
     const dateKey = formatDateKey(tomorrow);
     for (let h = DELIVERY_HOUR_START; h <= DELIVERY_HOUR_END; h++) {
-      slots.push({ value: `${dateKey} ${h}`, label: `מחר ${hourLabel(h)}`, hour: h });
+      slots.push({ value: `${dateKey} ${h}`, label: rangeLabel(h), hour: h });
     }
     return slots;
   }
@@ -36,7 +37,7 @@ export function getAvailableDeliverySlots() {
     tomorrow.setDate(tomorrow.getDate() + 1);
     const dateKey = formatDateKey(tomorrow);
     for (let h = DELIVERY_HOUR_START; h <= DELIVERY_HOUR_END; h++) {
-      slots.push({ value: `${dateKey} ${h}`, label: `מחר ${hourLabel(h)}`, hour: h });
+      slots.push({ value: `${dateKey} ${h}`, label: rangeLabel(h), hour: h });
     }
     return slots;
   }
@@ -44,7 +45,7 @@ export function getAvailableDeliverySlots() {
   const today = formatDateKey(now);
   const start = Math.max(DELIVERY_HOUR_START, earliest);
   for (let h = start; h <= DELIVERY_HOUR_END; h++) {
-    slots.push({ value: `${today} ${h}`, label: hourLabel(h), hour: h });
+    slots.push({ value: `${today} ${h}`, label: rangeLabel(h), hour: h });
   }
   return slots;
 }

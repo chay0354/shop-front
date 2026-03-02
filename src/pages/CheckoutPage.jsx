@@ -307,7 +307,7 @@ export default function CheckoutPage() {
     }
     if (form.payment_method === 'card') {
       if (ordersBlocked) {
-        setError('משלוחים לא זמינים כעת, נסה שוב מאוחר יותר');
+        setError('מרכז ההזמנות סגור כעת לצורך עדכונים. נשמח לעמוד לרשותכם בווטסאפ לעדכונים אונליין.');
         return;
       }
       orderPayloadRef.current = orderPayload;
@@ -473,7 +473,9 @@ export default function CheckoutPage() {
       <form onSubmit={handleSubmit} className="checkout-form">
         {ordersBlocked && (
           <p className="checkout-blocked-msg" role="alert">
-            משלוחים לא זמינים כעת, נסה שוב מאוחר יותר
+            מרכז ההזמנות סגור כעת לצורך עדכונים.
+            <br />
+            נשמח לעמוד לרשותכם בווטסאפ לעדכונים אונליין.
           </p>
         )}
         <section className="checkout-section">
@@ -559,7 +561,7 @@ export default function CheckoutPage() {
                 onChange={handleChange}
                 className="checkout-input checkout-select"
               >
-                <option value="">מיידי</option>
+                <option value="">ללא תזמון לשעה ספציפית</option>
                 {availableSlots.map((slot) => (
                   <option key={slot.value} value={slot.value}>{slot.label}</option>
                 ))}
@@ -615,7 +617,7 @@ export default function CheckoutPage() {
             </span>
           </label>
           <button type="submit" className="checkout-submit" disabled={loading || !termsAccepted || ordersBlocked}>
-            {loading ? 'שולח...' : ordersBlocked ? 'משלוחים לא זמינים' : 'אישור ההזמנה'}
+            {loading ? 'שולח...' : ordersBlocked ? 'מרכז ההזמנות סגור' : 'אישור ההזמנה'}
           </button>
         </div>
       </form>
