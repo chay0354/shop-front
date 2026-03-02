@@ -734,6 +734,16 @@
   background: var(--border);
 }
 
+.admin-modal-btn-delete {
+  background: #dc2626;
+  color: #fff;
+  margin-right: auto;
+}
+
+.admin-modal-btn-delete:hover:not(:disabled) {
+  background: #b91c1c;
+}
+
 .admin-modal-items-title {
   font-size: 1rem;
   font-weight: 600;

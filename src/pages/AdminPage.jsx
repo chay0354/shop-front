@@ -104,6 +104,7 @@ export default function AdminPage() {
   const [error, setError] = useState(null);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [updatingId, setUpdatingId] = useState(null);
+  const [deletingOrderId, setDeletingOrderId] = useState(null);
   const [carousel, setCarousel] = useState([]);
   const [carouselUploading, setCarouselUploading] = useState(false);
   const [carouselDeletingId, setCarouselDeletingId] = useState(null);
@@ -223,6 +224,22 @@ export default function AdminPage() {
 
   const ordersSupplied = orders.filter((o) => o.order_status === 'supplied');
   const ordersNotSupplied = orders.filter((o) => o.order_status !== 'supplied');
+
+  const deleteOrder = async (orderId) => {
+    if (!confirm('למחוק את ההזמנה לצמיתות? לא ניתן לשחזר.')) return;
+    setDeletingOrderId(orderId);
+    try {
+      const res = await fetch(`${API}/admin/orders/${orderId}`, { method: 'DELETE' });
+      if (!res.ok) throw new Error();
+      setSelectedOrder(null);
+      await loadOrders();
+      await loadUsage();
+    } catch (err) {
+      alert('שגיאה במחיקת ההזמנה');
+    } finally {
+      setDeletingOrderId(null);
+    }
+  };
 
   const updateOrderStatus = async (orderId, order_status) => {
     setUpdatingId(orderId);
@@ -772,7 +789,7 @@ export default function AdminPage() {
                   type="button"
                   className="admin-modal-btn admin-modal-btn-secondary"
                   onClick={() => updateOrderStatus(selectedOrder.id, 'not_supplied')}
-                  disabled={updatingId === selectedOrder.id}
+                  disabled={updatingId === selectedOrder.id || deletingOrderId === selectedOrder.id}
                 >
                   סמן כלא סופקה
                 </button>
@@ -781,11 +798,19 @@ export default function AdminPage() {
                   type="button"
                   className="admin-modal-btn"
                   onClick={() => updateOrderStatus(selectedOrder.id, 'supplied')}
-                  disabled={updatingId === selectedOrder.id}
+                  disabled={updatingId === selectedOrder.id || deletingOrderId === selectedOrder.id}
                 >
                   {updatingId === selectedOrder.id ? 'מעדכן...' : 'סמן כסופקה'}
                 </button>
               )}
+              <button
+                type="button"
+                className="admin-modal-btn admin-modal-btn-delete"
+                onClick={() => deleteOrder(selectedOrder.id)}
+                disabled={updatingId === selectedOrder.id || deletingOrderId === selectedOrder.id}
+              >
+                {deletingOrderId === selectedOrder.id ? 'מוחק...' : 'מחק הזמנה'}
+              </button>
             </div>
             <h3 className="admin-modal-items-title">מוצרים בהזמנה</h3>
             <table className="admin-modal-items-table">
