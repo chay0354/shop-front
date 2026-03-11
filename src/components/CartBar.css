@@ -22,12 +22,12 @@
   }
 
   .cart-bar-logo-wrap {
-    height: 44px;
+    height: 56px;
   }
 
   .cart-bar-logo-img {
     height: 250%;
-    max-width: 110px;
+    max-width: 140px;
     transform: translateY(-30%);
   }
 
@@ -46,8 +46,8 @@
 .cart-bar-logo {
   display: block;
   text-decoration: none;
-  min-width: 56px;
-  min-height: 52px;
+  min-width: 72px;
+  min-height: 68px;
   line-height: 0;
   flex-shrink: 0;
 }
@@ -55,7 +55,7 @@
 /* Logo wrap: crop 30% from top and bottom, show middle 40% */
 .cart-bar-logo-wrap {
   display: block;
-  height: 52px;
+  height: 68px;
   overflow: hidden;
   width: fit-content;
 }
@@ -64,7 +64,7 @@
   display: block;
   width: auto;
   height: 250%;
-  max-width: 130px;
+  max-width: 170px;
   object-fit: contain;
   object-position: center top;
   transform: translateY(-30%);
