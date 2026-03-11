@@ -23,7 +23,7 @@ export default function CartBar() {
       </nav>
       <Link to="/" className="cart-bar-logo" aria-label="קריות-מרקט">
         <span className="cart-bar-logo-wrap">
-          <img src="/WhatsApp_Image_2026-02-16_at_15.18.13-removebg-preview.png" alt="קריות-מרקט" className="cart-bar-logo-img" />
+          <img src="/WhatsApp_Image_2026-03-11_at_13.06.32-removebg-preview.png" alt="קריות-מרקט" className="cart-bar-logo-img" />
         </span>
       </Link>
     </header>

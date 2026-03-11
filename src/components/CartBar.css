@@ -9,7 +9,8 @@
   width: 100%;
   max-width: 100%;
   min-width: 0;
-  padding: 0.25rem 1.25rem;
+  padding: 0.15rem 1rem;
+  min-height: 0;
   background: #d8d8d8;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
@@ -17,17 +18,17 @@
 
 @media (max-width: 480px) {
   .cart-bar {
-    padding: 0.2rem 1rem;
+    padding: 0.15rem 0.75rem;
   }
 
   .cart-bar-logo-wrap {
-    height: 32px;
+    height: 44px;
   }
 
   .cart-bar-logo-img {
-    height: 95px;
-    margin-top: -14px;
-    max-width: 95px;
+    height: 250%;
+    max-width: 110px;
+    transform: translateY(-30%);
   }
 
   .cart-bar-cart {
@@ -45,14 +46,16 @@
 .cart-bar-logo {
   display: block;
   text-decoration: none;
-  min-width: 0;
+  min-width: 56px;
+  min-height: 52px;
   line-height: 0;
+  flex-shrink: 0;
 }
 
-/* Crop wrapper: same cut as hero (top 15%, bottom 50%) */
+/* Logo wrap: crop 30% from top and bottom, show middle 40% */
 .cart-bar-logo-wrap {
   display: block;
-  height: 34px;
+  height: 52px;
   overflow: hidden;
   width: fit-content;
 }
@@ -60,10 +63,11 @@
 .cart-bar-logo-img {
   display: block;
   width: auto;
-  height: 105px;
-  max-width: 105px;
+  height: 250%;
+  max-width: 130px;
   object-fit: contain;
-  margin-top: -14px;
+  object-position: center top;
+  transform: translateY(-30%);
 }
 
 .cart-bar-logo:hover .cart-bar-logo-img {
