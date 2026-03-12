@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { DELIVERY_SLOT_RANGES } from '../utils/deliverySlots';
+import { DELIVERY_HOUR_START, DELIVERY_HOUR_END, TOMORROW_SLOT_RANGES } from '../utils/deliverySlots';
 import './AdminPage.css';
 
 const API = import.meta.env.VITE_API_URL ? `${String(import.meta.env.VITE_API_URL).replace(/\/$/, '')}/api` : '/api';
@@ -23,11 +23,12 @@ function formatDeliverySlot(slot) {
   if (!slot) return '—';
   const parts = slot.trim().split(/\s+/);
   if (parts.length >= 2) {
-    const [datePart, rangePart] = parts;
+    const [datePart, hourPart] = parts;
     const [y, m, d] = datePart.split('-');
     if (y && m && d) {
       const dateStr = [d, m, y].join('/');
-      return `${dateStr} ${rangePart}`;
+      const isRange = /^\d+-\d+$/.test(hourPart);
+      return isRange ? `${dateStr} ${hourPart}` : `${dateStr} ${hourPart}:00`;
     }
   }
   return slot;
@@ -121,15 +122,26 @@ export default function AdminPage() {
   const [subcategoryPhotoUploadingId, setSubcategoryPhotoUploadingId] = useState(null);
   const [categoryFileSelected, setCategoryFileSelected] = useState(null);
   const [subcategoryFileSelected, setSubcategoryFileSelected] = useState(null);
+  const hourLabel = (h) => `${String(h).padStart(2, '0')}:00-${String(h + 1).padStart(2, '0')}:00`;
   const defaultSlotLimits = () => {
     const acc = {};
-    for (const r of DELIVERY_SLOT_RANGES) acc[r.value] = 1;
+    for (let h = DELIVERY_HOUR_START; h <= 20; h++) acc[h] = 1;
+    for (const r of TOMORROW_SLOT_RANGES) acc[r.value] = 1;
     return acc;
   };
+  const deliverySlotOptions = useMemo(() => {
+    const list = [];
+    for (let h = DELIVERY_HOUR_START; h <= 20; h++) {
+      list.push({ key: h, label: hourLabel(h) });
+    }
+    for (const r of TOMORROW_SLOT_RANGES) {
+      list.push({ key: r.value, label: `${r.label} (מחר)` });
+    }
+    return list;
+  }, []);
   const [settings, setSettings] = useState({ express_daily_limit: 5, slot_limits: defaultSlotLimits(), delivery_blocked: false });
   const [settingsSaving, setSettingsSaving] = useState(false);
   const [usage, setUsage] = useState({ slot_counts: {}, express_count: 0 });
-  const deliverySlotOptions = DELIVERY_SLOT_RANGES;
 
   const loadOrders = () => {
     return fetch(`${API}/admin/orders`)
@@ -283,8 +295,8 @@ export default function AdminPage() {
 
       <section className="admin-section admin-settings-section">
         <h2 className="admin-section-title">הגדרות משלוח</h2>
-        <p className="admin-section-desc">מגבלת משלוח אקספרס ליום — כשמגיעים למגבלה, האפשרות לא תוצג ללקוח. מגבלת הזמנות לחלון משלוח — כמה הזמנות מותרות לכל חלון (10–14, 14–18, 18–22).</p>
-        <span className="admin-settings-slot-limits-title">מגבלת הזמנות לחלון משלוח:</span>
+        <p className="admin-section-desc">מגבלת משלוח אקספרס ליום — כשמגיעים למגבלה, האפשרות לא תוצג ללקוח. מגבלת הזמנות — מהיום להיום (לכל שעה) ומהיום למחר (10–14, 14–18, 18–22).</p>
+        <span className="admin-settings-slot-limits-title">מגבלת הזמנות לשעת / חלון משלוח:</span>
         <label className="admin-settings-block-orders">
           <input
             type="checkbox"
@@ -311,16 +323,16 @@ export default function AdminPage() {
           <div className="admin-settings-slot-limits">
             <div className="admin-settings-slot-grid">
               {deliverySlotOptions.map((slot) => (
-                <label key={slot.value} className="admin-settings-slot-cell">
+                <label key={slot.key} className="admin-settings-slot-cell">
                   <span className="admin-settings-slot-label">{slot.label}</span>
                   <input
                     type="number"
                     min={0}
                     max={99}
-                    value={settings.slot_limits?.[slot.value] ?? 1}
+                    value={settings.slot_limits?.[slot.key] ?? 1}
                     onChange={(e) => setSettings((s) => ({
                       ...s,
-                      slot_limits: { ...(s.slot_limits || defaultSlotLimits()), [slot.value]: parseInt(e.target.value, 10) || 0 },
+                      slot_limits: { ...(s.slot_limits || defaultSlotLimits()), [slot.key]: parseInt(e.target.value, 10) || 0 },
                     }))}
                     className="admin-settings-input admin-settings-slot-input"
                   />

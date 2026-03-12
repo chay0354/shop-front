@@ -50,6 +50,7 @@ export default function CheckoutPage() {
   const [slotLimits, setSlotLimits] = useState({});
   const [ordersBlocked, setOrdersBlocked] = useState(false);
   const [deliverySlots] = useState(() => getAvailableDeliverySlots());
+  const { today: todaySlots, tomorrow: tomorrowSlots } = deliverySlots;
   const [form, setForm] = useState({
     customer_name: '',
     customer_phone: '',
@@ -112,20 +113,30 @@ export default function CheckoutPage() {
   useEffect(() => {
     if (!form.delivery_time_slot) return;
     const count = deliverySlotCounts[form.delivery_time_slot] || 0;
-    const rangeKey = form.delivery_time_slot.split(/\s+/).pop();
-    const maxForSlot = (rangeKey && slotLimits[rangeKey] !== undefined) ? slotLimits[rangeKey] : 1;
+    const part = form.delivery_time_slot.split(/\s+/).pop();
+    const hour = parseInt(part, 10);
+    const isTomorrowSlot = Number.isNaN(hour) || String(hour) !== part;
+    const maxForSlot = isTomorrowSlot
+      ? (slotLimits[part] !== undefined ? slotLimits[part] : 1)
+      : (Number.isFinite(hour) && slotLimits[hour] !== undefined ? slotLimits[hour] : 1);
     if (count >= maxForSlot) {
       setForm((f) => ({ ...f, delivery_time_slot: '' }));
     }
   }, [deliverySlotCounts, slotLimits, form.delivery_time_slot]);
 
-  const availableSlots = deliverySlots.filter((slot) => {
+  const availableToday = (todaySlots || []).filter((slot) => {
     const count = deliverySlotCounts[slot.value] || 0;
-    const rangeKey = slot.slotKey || slot.value.split(/\s+/).pop();
-    const maxForSlot = (rangeKey && slotLimits[rangeKey] !== undefined) ? slotLimits[rangeKey] : 1;
+    const maxForHour = (slotLimits[slot.hour] !== undefined ? slotLimits[slot.hour] : 1);
+    if (maxForHour === 0) return false;
+    return count < maxForHour;
+  });
+  const availableTomorrow = (tomorrowSlots || []).filter((slot) => {
+    const count = deliverySlotCounts[slot.value] || 0;
+    const maxForSlot = (slotLimits[slot.slotKey] !== undefined ? slotLimits[slot.slotKey] : 1);
     if (maxForSlot === 0) return false;
     return count < maxForSlot;
   });
+  const allAvailableSlots = [...availableToday, ...availableTomorrow];
 
   useEffect(() => {
     if (step !== 'card' || !initPaymentPending || lowProfileId) return;
@@ -553,16 +564,25 @@ export default function CheckoutPage() {
             <label className="checkout-label">
               <select
                 name="delivery_time_slot"
-                value={form.delivery_time_slot && availableSlots.some((s) => s.value === form.delivery_time_slot) ? form.delivery_time_slot : ''}
+                value={form.delivery_time_slot && allAvailableSlots.some((s) => s.value === form.delivery_time_slot) ? form.delivery_time_slot : ''}
                 onChange={handleChange}
                 className="checkout-input checkout-select"
               >
                 <option value="">תיאום זמני הספקה</option>
-                {availableSlots.map((slot) => (
-                  <option key={slot.value} value={slot.value}>{slot.label}</option>
-                ))}
+                {availableToday.length > 0 && (
+                  <optgroup label="משלוחים מהיום להיום">
+                    {availableToday.map((slot) => (
+                      <option key={slot.value} value={slot.value}>{slot.label}</option>
+                    ))}
+                  </optgroup>
+                )}
+                <optgroup label="משלוחים מהיום למחר">
+                  {availableTomorrow.map((slot) => (
+                    <option key={slot.value} value={slot.value}>{slot.label}</option>
+                  ))}
+                </optgroup>
               </select>
-              {availableSlots.length === 0 && (
+              {allAvailableSlots.length === 0 && (
                 <p className="checkout-slot-empty">אין שעות משלוח זמינות כרגע. נסו מחר או שעה אחרת.</p>
               )}
             </label>
