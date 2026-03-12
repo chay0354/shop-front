@@ -1,6 +1,9 @@
-export const DELIVERY_HOUR_START = 8;
-export const DELIVERY_HOUR_END = 19;
-const MIN_HOURS_FROM_NOW = 2;
+// Three time windows: 10-14, 14-18, 18-22. Hide a window only when its end hour has passed.
+export const DELIVERY_SLOT_RANGES = [
+  { value: '10-14', label: '10-14', endHour: 14 },
+  { value: '14-18', label: '14-18', endHour: 18 },
+  { value: '18-22', label: '18-22', endHour: 22 },
+];
 
 export function formatDateKey(d) {
   const y = d.getFullYear();
@@ -12,40 +15,26 @@ export function formatDateKey(d) {
 export function getAvailableDeliverySlots() {
   const now = new Date();
   const currentHour = now.getHours();
-  const isOutsideWindow = currentHour >= DELIVERY_HOUR_END || currentHour < DELIVERY_HOUR_START;
-  const slots = [];
-  const hourLabel = (h) => `${String(h).padStart(2, '0')}:00`;
-  const rangeLabel = (h) => `${hourLabel(h)}-${hourLabel(h + 1)}`;
-
-  if (isOutsideWindow) {
-    const tomorrow = new Date(now);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const dateKey = formatDateKey(tomorrow);
-    for (let h = DELIVERY_HOUR_START; h <= DELIVERY_HOUR_END; h++) {
-      slots.push({ value: `${dateKey} ${h}`, label: rangeLabel(h), hour: h });
-    }
-    return slots;
-  }
-
-  const nowPlus2 = new Date(now.getTime() + MIN_HOURS_FROM_NOW * 60 * 60 * 1000);
-  const h2 = nowPlus2.getHours();
-  const m2 = nowPlus2.getMinutes();
-  const earliest = m2 > 0 ? h2 + 1 : h2;
-
-  if (earliest > DELIVERY_HOUR_END) {
-    const tomorrow = new Date(now);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const dateKey = formatDateKey(tomorrow);
-    for (let h = DELIVERY_HOUR_START; h <= DELIVERY_HOUR_END; h++) {
-      slots.push({ value: `${dateKey} ${h}`, label: rangeLabel(h), hour: h });
-    }
-    return slots;
-  }
-
   const today = formatDateKey(now);
-  const start = Math.max(DELIVERY_HOUR_START, earliest);
-  for (let h = start; h <= DELIVERY_HOUR_END; h++) {
-    slots.push({ value: `${today} ${h}`, label: rangeLabel(h), hour: h });
+
+  const slots = [];
+  for (const range of DELIVERY_SLOT_RANGES) {
+    if (currentHour >= range.endHour) continue;
+    slots.push({
+      value: `${today} ${range.value}`,
+      label: range.label,
+      slotKey: range.value,
+    });
   }
-  return slots;
+
+  if (slots.length > 0) return slots;
+
+  const tomorrow = new Date(now);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const tomorrowKey = formatDateKey(tomorrow);
+  return DELIVERY_SLOT_RANGES.map((range) => ({
+    value: `${tomorrowKey} ${range.value}`,
+    label: range.label,
+    slotKey: range.value,
+  }));
 }

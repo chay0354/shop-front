@@ -9,7 +9,7 @@
   width: 100%;
   max-width: 100%;
   min-width: 0;
-  padding: 0.15rem 1rem;
+  padding: 0.05rem 1rem;
   min-height: 0;
   background: #d8d8d8;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
@@ -18,17 +18,17 @@
 
 @media (max-width: 480px) {
   .cart-bar {
-    padding: 0.15rem 0.75rem;
+    padding: 0.05rem 0.75rem;
   }
 
   .cart-bar-logo-wrap {
-    height: 56px;
+    height: 48px;
   }
 
   .cart-bar-logo-img {
-    height: 250%;
+    height: 333.33%;
     max-width: 140px;
-    transform: translateY(-30%);
+    transform: translateY(-35%);
   }
 
   .cart-bar-cart {
@@ -46,16 +46,16 @@
 .cart-bar-logo {
   display: block;
   text-decoration: none;
-  min-width: 72px;
-  min-height: 68px;
+  min-width: 64px;
+  min-height: 56px;
   line-height: 0;
   flex-shrink: 0;
 }
 
-/* Logo wrap: crop 30% from top and bottom, show middle 40% */
+/* Logo wrap: crop 35% from top and bottom, show middle 30% */
 .cart-bar-logo-wrap {
   display: block;
-  height: 68px;
+  height: 56px;
   overflow: hidden;
   width: fit-content;
 }
@@ -63,11 +63,11 @@
 .cart-bar-logo-img {
   display: block;
   width: auto;
-  height: 250%;
+  height: 333.33%;
   max-width: 170px;
   object-fit: contain;
   object-position: center top;
-  transform: translateY(-30%);
+  transform: translateY(-35%);
 }
 
 .cart-bar-logo:hover .cart-bar-logo-img {

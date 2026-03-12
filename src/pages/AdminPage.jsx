@@ -1,6 +1,6 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getAvailableDeliverySlots, DELIVERY_HOUR_START, DELIVERY_HOUR_END } from '../utils/deliverySlots';
+import { DELIVERY_SLOT_RANGES } from '../utils/deliverySlots';
 import './AdminPage.css';
 
 const API = import.meta.env.VITE_API_URL ? `${String(import.meta.env.VITE_API_URL).replace(/\/$/, '')}/api` : '/api';
@@ -23,11 +23,11 @@ function formatDeliverySlot(slot) {
   if (!slot) return '—';
   const parts = slot.trim().split(/\s+/);
   if (parts.length >= 2) {
-    const [datePart, hourPart] = parts;
+    const [datePart, rangePart] = parts;
     const [y, m, d] = datePart.split('-');
     if (y && m && d) {
       const dateStr = [d, m, y].join('/');
-      return `${dateStr} ${hourPart}:00`;
+      return `${dateStr} ${rangePart}`;
     }
   }
   return slot;
@@ -88,7 +88,7 @@ function OrdersTable({ orders, onSelectOrder, onUpdateStatus, updatingId }) {
               <td>{order.delivery_city}</td>
               <td>{PAYMENT_LABELS[order.payment_method] || order.payment_method}</td>
               <td>{order.express_delivery ? 'כן' : 'לא'}</td>
-              <td className="admin-td-mono">{order.id.slice(0, 8)}…</td>
+              <td className="admin-td-mono">{order.order_number ?? order.id}</td>
               <td className="admin-td-total">₪{Number(order.total).toFixed(2)}</td>
             </tr>
           ))}
@@ -121,20 +121,15 @@ export default function AdminPage() {
   const [subcategoryPhotoUploadingId, setSubcategoryPhotoUploadingId] = useState(null);
   const [categoryFileSelected, setCategoryFileSelected] = useState(null);
   const [subcategoryFileSelected, setSubcategoryFileSelected] = useState(null);
-  const DELIVERY_HOURS = useMemo(() => {
-    const hours = [];
-    for (let h = DELIVERY_HOUR_START; h <= DELIVERY_HOUR_END; h++) hours.push(h);
-    return hours;
-  }, []);
   const defaultSlotLimits = () => {
     const acc = {};
-    for (let h = DELIVERY_HOUR_START; h <= DELIVERY_HOUR_END; h++) acc[h] = 1;
+    for (const r of DELIVERY_SLOT_RANGES) acc[r.value] = 1;
     return acc;
   };
   const [settings, setSettings] = useState({ express_daily_limit: 5, slot_limits: defaultSlotLimits(), delivery_blocked: false });
   const [settingsSaving, setSettingsSaving] = useState(false);
   const [usage, setUsage] = useState({ slot_counts: {}, express_count: 0 });
-  const deliverySlotOptions = useMemo(() => getAvailableDeliverySlots(), []);
+  const deliverySlotOptions = DELIVERY_SLOT_RANGES;
 
   const loadOrders = () => {
     return fetch(`${API}/admin/orders`)
@@ -288,8 +283,8 @@ export default function AdminPage() {
 
       <section className="admin-section admin-settings-section">
         <h2 className="admin-section-title">הגדרות משלוח</h2>
-        <p className="admin-section-desc">מגבלת משלוח אקספרס ליום — כשמגיעים למגבלה, האפשרות לא תוצג ללקוח. מגבלת הזמנות לשעת משלוח — כמה הזמנות מותרות לכל שעה (08:00–20:00); כל שעה מוגבלת בנפרד.</p>
-        <span className="admin-settings-slot-limits-title">מגבלת הזמנות לשעת משלוח:</span>
+        <p className="admin-section-desc">מגבלת משלוח אקספרס ליום — כשמגיעים למגבלה, האפשרות לא תוצג ללקוח. מגבלת הזמנות לחלון משלוח — כמה הזמנות מותרות לכל חלון (10–14, 14–18, 18–22).</p>
+        <span className="admin-settings-slot-limits-title">מגבלת הזמנות לחלון משלוח:</span>
         <label className="admin-settings-block-orders">
           <input
             type="checkbox"
@@ -322,10 +317,10 @@ export default function AdminPage() {
                     type="number"
                     min={0}
                     max={99}
-                    value={settings.slot_limits?.[slot.hour] ?? 1}
+                    value={settings.slot_limits?.[slot.value] ?? 1}
                     onChange={(e) => setSettings((s) => ({
                       ...s,
-                      slot_limits: { ...(s.slot_limits || defaultSlotLimits()), [slot.hour]: parseInt(e.target.value, 10) || 0 },
+                      slot_limits: { ...(s.slot_limits || defaultSlotLimits()), [slot.value]: parseInt(e.target.value, 10) || 0 },
                     }))}
                     className="admin-settings-input admin-settings-slot-input"
                   />
@@ -767,7 +762,7 @@ export default function AdminPage() {
               </button>
             </div>
             <dl className="admin-modal-details">
-              <div><dt>מזהה</dt><dd className="admin-dd-mono">{selectedOrder.id}</dd></div>
+              <div><dt>מזהה הזמנה</dt><dd className="admin-dd-mono">{selectedOrder.order_number ?? selectedOrder.id}</dd></div>
               <div><dt>תאריך</dt><dd>{formatDate(selectedOrder.created_at)}</dd></div>
               <div><dt>שם</dt><dd>{selectedOrder.customer_name}</dd></div>
               <div><dt>טלפון</dt><dd><a href={`tel:${selectedOrder.customer_phone}`}>{selectedOrder.customer_phone}</a></dd></div>

@@ -112,21 +112,19 @@ export default function CheckoutPage() {
   useEffect(() => {
     if (!form.delivery_time_slot) return;
     const count = deliverySlotCounts[form.delivery_time_slot] || 0;
-    const hourPart = form.delivery_time_slot.split(/\s+/).pop();
-    const hour = parseInt(hourPart, 10);
-    const maxForHour = (Number.isFinite(hour) && slotLimits[hour] !== undefined) ? slotLimits[hour] : 1;
-    if (count >= maxForHour) {
+    const rangeKey = form.delivery_time_slot.split(/\s+/).pop();
+    const maxForSlot = (rangeKey && slotLimits[rangeKey] !== undefined) ? slotLimits[rangeKey] : 1;
+    if (count >= maxForSlot) {
       setForm((f) => ({ ...f, delivery_time_slot: '' }));
     }
   }, [deliverySlotCounts, slotLimits, form.delivery_time_slot]);
 
   const availableSlots = deliverySlots.filter((slot) => {
     const count = deliverySlotCounts[slot.value] || 0;
-    const hourPart = slot.value.split(/\s+/).pop();
-    const hour = parseInt(hourPart, 10);
-    const maxForHour = (Number.isFinite(hour) && slotLimits[hour] !== undefined) ? slotLimits[hour] : 1;
-    if (maxForHour === 0) return false;
-    return count < maxForHour;
+    const rangeKey = slot.slotKey || slot.value.split(/\s+/).pop();
+    const maxForSlot = (rangeKey && slotLimits[rangeKey] !== undefined) ? slotLimits[rangeKey] : 1;
+    if (maxForSlot === 0) return false;
+    return count < maxForSlot;
   });
 
   useEffect(() => {
@@ -224,7 +222,7 @@ export default function CheckoutPage() {
               .then((data) => {
                 if (data.orderId) {
                   clearCart();
-                  navigate(`/order-confirmation/${data.orderId}`, { replace: true });
+                  navigate(`/order-confirmation/${data.orderNumber ?? data.orderId}`, { replace: true, state: { orderNumber: data.orderNumber } });
                 } else {
                   setCardError(data.error || 'שגיאה בשמירת ההזמנה');
                 }
@@ -297,7 +295,7 @@ export default function CheckoutPage() {
         const data = await res.json().catch(() => ({}));
         if (!res.ok) throw new Error(data.error || res.statusText);
         clearCart();
-        navigate(`/order-confirmation/${data.orderId}`, { replace: true });
+        navigate(`/order-confirmation/${data.orderNumber ?? data.orderId}`, { replace: true, state: { orderNumber: data.orderNumber } });
       } catch (err) {
         setError(err.message || 'שגיאה בשליחת ההזמנה');
       } finally {
@@ -553,15 +551,13 @@ export default function CheckoutPage() {
               />
             </label>
             <label className="checkout-label">
-              <span>שעת משלוח</span>
-              <p className="checkout-hint">בחרו שעה עגולה מהשעה הבאה עד 20:00. אחרי 20:00 או לפני 08:00 — זמין מחר 08:00–20:00. בחירת שעה מבטלת משלוח אקספרס.</p>
               <select
                 name="delivery_time_slot"
                 value={form.delivery_time_slot && availableSlots.some((s) => s.value === form.delivery_time_slot) ? form.delivery_time_slot : ''}
                 onChange={handleChange}
                 className="checkout-input checkout-select"
               >
-                <option value="">ללא תזמון לשעה ספציפית</option>
+                <option value="">תיאום זמני הספקה</option>
                 {availableSlots.map((slot) => (
                   <option key={slot.value} value={slot.value}>{slot.label}</option>
                 ))}
