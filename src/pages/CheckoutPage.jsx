@@ -612,7 +612,7 @@ export default function CheckoutPage() {
         <div className="checkout-summary">
           {deliveryFee > 0 && (
             <div className="checkout-delivery-row">
-              <span>דמי משלוח (מתחת ל־₪279)</span>
+              <span>דמי משלוח</span>
               <span>₪{deliveryFee.toFixed(2)}</span>
             </div>
           )}

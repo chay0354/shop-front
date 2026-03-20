@@ -45,12 +45,6 @@ export default function HomePage() {
 
   return (
     <div className="home-page">
-      {/* Top announcement strip */}
-      <div className="home-announce">
-        <span className="home-announce-dot" />
-        <span>משלוח חינם מעל 279 שח בהתאם לאיזורי השילוח ולתקנון האתר.</span>
-      </div>
-
       {/* Hero */}
       <header className="home-hero">
         <div className="home-hero-bg" aria-hidden />

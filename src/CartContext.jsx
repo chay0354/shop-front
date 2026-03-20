@@ -70,10 +70,9 @@ export function CartProvider({ children }) {
     const clearCart = () => dispatch({ type: 'clear' });
 
     const subtotal = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
-    const FREE_SHIPPING_MIN = 279;
-    const DELIVERY_FEE = 15;
+    const DELIVERY_FEE = 22;
     const isTestPaymentOnly = items.length > 0 && items.every((i) => i.product_id == null);
-    const deliveryFee = isTestPaymentOnly ? 0 : (subtotal > 0 && subtotal < FREE_SHIPPING_MIN ? DELIVERY_FEE : 0);
+    const deliveryFee = isTestPaymentOnly ? 0 : (subtotal > 0 ? DELIVERY_FEE : 0);
     const total = subtotal + deliveryFee;
     const count = items.reduce((sum, i) => sum + i.quantity, 0);
 

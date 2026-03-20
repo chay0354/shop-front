@@ -69,7 +69,7 @@ export default function CartPage() {
         <div className="cart-summary">
           {deliveryFee > 0 && (
             <div className="cart-total-row cart-delivery-row">
-              <span>דמי משלוח (מתחת ל־₪279)</span>
+              <span>דמי משלוח</span>
               <span>₪{deliveryFee.toFixed(2)}</span>
             </div>
           )}
